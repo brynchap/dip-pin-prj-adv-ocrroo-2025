@@ -14,7 +14,7 @@ You must demonstrate your ability at:
 1. Complete the knowledge section (Word document) available via Blackboard
 2. Fork this repository
 3. Clone the repository to your local computer
-4. Install `uv` and check that it is running with `uv --version`
+4. Install `uv` (`powershell -ExecutionPolicy ByPass -c {$env:UV_INSTALL_DIR = "C:\Users\20143871.ED.001\Source\Repos";irm https://astral.sh/uv/install.ps1 | iex}`) and check that it is running with `uv --version`
 5. Obtain a video that can be used to test the functionality and place in the `resources/` folder - your instructor will provide you with one
 6. Follow the steps in the remainder of the guide insuring your commit to git whenever prompted
 7. Submit a `zip` of this repository along with the `.git` folder. **Do not include your `venv/`**. Ensure your submission includes the assessment Word document with all of the questions in it attempted.
@@ -28,28 +28,28 @@ Complete the steps below and fill in the `> block` sections
 ### Installing and running OpenCV
 
 1. Examine the `pyproject.toml` what dependencies does it currently identify?
->
->
+> Dependencies are empty,
+> requires Python 3.12 or higher
 2. Create a `.venv` in this folder using `uv venv`
 3. Activate the `venv` as instructed by `uv`
 4. In order to complete the project, we need to install OpenCV. Fill in the following:
   - What role does OpenCV have in this project?
-  >
+  >OpenCV will be crucial for it's ability to interact with mp4s
   - What is the `uv pip` command to install OpenCV?
-  > `uv pip install ????`
+  > `uv pip install opencv-python`
   - What is the URL of this library's git repo?
-  > [Insert URL Here](https://github.com/opencv/????-?????)
+  > [Insert URL Here](https://github.com/brynchap/dip-pin-prj-adv-ocrroo-2025)
 5. Add OpenCV to your project using the `uv add` command:
-  > `uv add name-of-open-cv-library
+  > `uv add --python python opencv-python`
 
 6. Have the dependencies in the `pyproject.toml` changed? If so, how?
-  >
-  >
+  >Yes.
+  > The `uv add <>` command automatically edits the pyproject.toml file to add the dependency
 7. Why did we use `uv add` over `uv pip`?
-  >
+  > to add the dependency to the pyproject.toml file
   >
 8. The `numpy` library is required for OpenCV. Should you add an explicit requirement for it? Why/Why not?
-  >
+  > It is not necessary to add an explicit requirement for it as `uv` handles these sub-dependencies automatically
   >
 9. Commit the changes so far to git. Use the message `chore: add OpenCV dependency`
 10. Go to `preliminary/library_basics.py` and complete the required functionality.
