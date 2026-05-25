@@ -68,11 +68,15 @@ name = "ocrroo"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "numpy" },
     { name = "opencv-python" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "opencv-python", specifier = ">=4.13.0.92" }]
+requires-dist = [
+    { name = "numpy", specifier = ">=2.4.5" },
+    { name = "opencv-python", specifier = ">=4.13.0.92" },
+]
 
 [[package]]
 name = "opencv-python"

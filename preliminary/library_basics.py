@@ -17,20 +17,19 @@ import cv2
 import numpy as np
 
 
-VID_PATH = Path("resources/name-of-vid-given-to-you-by-instructor.mp4")
+VID_PATH = Path("resources/oop.mp4")
 
 class CodingVideo:
     capture: cv2.VideoCapture
 
-
     def __init__(self, video: Path | str):
-        self.capture = ... # You complete me!
+        self.capture = cv2.VideoCapture(video) # You complete me!
         if not self.capture.isOpened():
             raise ValueError(f"Cannot open {video}")
 
-        self.fps = ...
-        self.frame_count = ...
-        self.duration = ...
+        self.fps = self.capture.get(cv2.CAP_PROP_FPS)
+        self.frame_count = self.capture.get(cv2.CAP_PROP_FRAME_COUNT)
+        self.duration = self.frame_count/self.fps
 
 
     def __str__(self) -> str:
@@ -45,10 +44,12 @@ class CodingVideo:
         ----------
         https://docs.opencv.org/3.4/d4/d15/group__videoio__flags__base.html#gaeb8dd9c89c10a5c63c139bf7c4f5704d
         """
+        return f"FPS: {self.fps}, FRAME COUNT: {self.frame_count}, DURATION: {self.duration}"
 
     def get_frame_number_at_time(self, seconds: int) -> int:
         """Given a time in seconds, returns the value of the nearest frame"""
-
+        frame = round(seconds * self.fps)
+        return frame
 
     def get_frame_rgb_array(self, frame_number: int) -> np.ndarray:
         """Returns a numpy N-dimensional array (ndarray)
@@ -60,8 +61,12 @@ class CodingVideo:
         Reference
         ---------
         # TODO: Find a tutorial on OpenCV that demonstrates color space conversion
-
+        https://www.geeksforgeeks.org/python/color-spaces-in-opencv-python/
         """
+        self.capture.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+        ret, frame = self.capture.read()
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        return frame_rgb
 
     def get_image_as_bytes(self, seconds: int) -> bytes:
         self.capture.set(cv2.CAP_PROP_POS_FRAMES, self.get_frame_number_at_time(seconds))
@@ -81,12 +86,15 @@ class CodingVideo:
 
       # TODO: Requires a third-party library to convert ndarray to png
       # TODO: Identify the library and add a reference to its documentation
-
-
+        The OpenCV library can convert also ndarray to png
+        https://www.geeksforgeeks.org/python/convert-a-numpy-array-to-an-image/
       """
+      a = self.get_frame_rgb_array(self.get_frame_number_at_time(seconds))
+      cv2.imwrite(output_path, a)
+
 def test():
     """Try out your class here"""
-    oop = CodingVideo("resources/oop.mp4")
+    oop = CodingVideo("../resources/oop.mp4")
     print(oop)
     oop.save_as_image(42)
 
