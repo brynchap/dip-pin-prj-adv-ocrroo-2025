@@ -96,11 +96,33 @@ FastAPI will allow us to enable communication with our OCR service from other pr
 4. Run the following curl command (may require git bash on Windows):
 `curl 127.0.0.1:8000/video`
 5. Confirm that a list of videos and URLs is returned by copying the output below:
-> Description
+> {"count":1,"videos":[{"id":"demo","path":"..\\resources\\oop.mp4","_links":{"self":"/video/demo","frame_example":"/video/demo/frame/1.0"}}]}
+
 6. What are the names of the two processes that just communicated?
->
+> curl and uvicorn are the processes
 6. Modify the simple_api.py so that it works correctly with your implementation and complete any TODO markers
 7. Demonstrate the use of at least two other end points below:
->
->
->
+> `curl http://127.0.0.1:8000/video/demo`
+> outputs:
+> `{"fps":23.976023976023978,"frame_count":15152,"duration_seconds":631.9646666666666}`
+
+> `curl 127.0.0.1:8000/video/demo/frame/400/ocr` outputs: 
+> ```
+> class User:
+> def __init__(seLf, Fu11_name, birthday):
+> 
+> seLf.name = Fu11_name
+> seLf.birthday = birthday # yyyymmdd
+> 
+> # Extract first and last names
+> name_pieces = fu11_name.sp1it(" ")
+> seLf.First_name = name_pieces[9]
+> 1ast_name = name_pieces[â€”1]
+> 
+> user = User("Dave Bowman", "19719315")
+> print(user.name)
+> 
+> Dave Bowman
+> 19719315
+> ```
+
