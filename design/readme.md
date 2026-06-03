@@ -33,10 +33,14 @@ Your persona should reflect the diversity of people with disabilities and their 
 
 What is the user journey? What are the steps the user takes to achieve their goals?
 
-- **Step 1**: [Description of the step]
-- **Step 2**: [Description of the step]
-- **Step 3**: [Description of the step]
-- **Step 4**: [Description of the step]
+- **Step 1**: [User Navigates to website via url or shortcut]
+- **Step 2**: [User listens to a list of hotkeys being audibly outputted to help navigate the website]
+- **Step 3**: [User uses hotkeys to upload a video file to the website]
+- **Step 4**: [User can type a specific time (seconds) to get the video's corresponding frame, audibly outputting the text on screen so the user can hear exactly what the code is]
+
+## User Stories
+- **1**: [Visually-Impaired User clicks hotkey to upload video to website]
+- **2**: [Visually-Impaired User clicks hotkey and inputs a time (seconds) with the website outputting the frame and audibly outputting the text on screen]
 
 ## UI Interaction Patterns
 
