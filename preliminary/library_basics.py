@@ -16,7 +16,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\20143871.ED.001\Source\Repos\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\20143871\Source\Repos\Tesseract-OCR\tesseract.exe'
 
 VID_PATH = Path("../resources/oop.mp4")
 

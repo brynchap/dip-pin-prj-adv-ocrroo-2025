@@ -1,0 +1,11 @@
+- Name: John
+- Age: 20
+- Occupation: Programmer
+- Location: Perth, Australia
+- Goals: Achieve a higher understanding of how to program
+- Frustrations: Videos not audibly explaining how to write code exactly
+- Motivations: wanting to be a programmer
+- Technology: video player, programming software
+- Experience: have difficulty learning and writing code due to lack of visibility
+- Personality: Determined and strong willed
+- Interests: Programming
