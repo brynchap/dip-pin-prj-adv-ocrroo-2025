@@ -6,8 +6,6 @@ Requirements
 """
 
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
-from fastapi import Response
-from fastapi.requests import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
