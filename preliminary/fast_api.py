@@ -16,7 +16,6 @@ from library_basics import CodingVideo
 import shutil
 import pyttsx3
 
-
 app = FastAPI()
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -39,10 +38,19 @@ class VideoMetaData(BaseModel):
     duration_seconds: float
     _links: dict | None = None
 
+#help_text_upload = "You are on the Upload Page. Press Alt U and enter a video from your file explorer to upload."
+#help_text = "You are on the Video Page. To change the time in the video. Press Alt Comma. Type the second you want to get. Then press enter. To listen to the Text on the current frame. Press Alt Full stop. If you want to go back to the upload page. Press Alt Minus"
 
+
+def text_to_speech(text, file_path = 'output.wav'):
+    engine = pyttsx3.init()
+    engine.save_to_file(text, file_path)
+    engine.runAndWait()
 
 @app.get("/", response_class=HTMLResponse)
 def main_page():
+    #text_to_speech(help_text_upload, "preliminary/help_text_upload.wav")
+    #text_to_speech(help_text, "preliminary/help_text.wav")
     html_content = f"""
     <html>
         <head>
@@ -55,7 +63,10 @@ def main_page():
                     <h1 class="help_symbol_home">?</h1>
                     <h1>ALT+H</h1>
                 </div>
-            
+                
+                <button accesskey="h" onclick="document.getElementById('help_text_upload').play()" style="display:none;"></button>
+                <audio id="help_text_upload" src="/preliminary/help_text_upload.wav"></audio>
+                
                 <br>
             
                 <form action="/upload/" method="POST" enctype="multipart/form-data">
@@ -67,7 +78,7 @@ def main_page():
                                name="uploaded_file" accesskey="u" onchange="this.form.submit()">
                     </div>
                 </form>
-            </header>
+            </header> 
         </body>
     </html>
     """
@@ -117,6 +128,7 @@ def video_frame(vid: str, time: float):
         text_in_frame = video.get_text_from_image()
         if text_in_frame.replace(" ", "") == "":
             text_in_frame = f"There is no text detected onscreen at {time} seconds"
+        text_to_speech(text_in_frame, "preliminary/text_in_frame.wav")
     finally:
         video.capture.release()
 
@@ -128,11 +140,20 @@ def video_frame(vid: str, time: float):
                 </head>
                 <body>
                     <header>
+                        <form hidden action="/go-back/" method="POST">
+                            <button accesskey="-"></button>
+                        </form>
+                    
                         <div class="help">
                             <h1 class="help_symbol">?</h1>
                             <h1>ALT+H</h1>
                         </div>
+                        
+                        <button accesskey="h" onclick="document.getElementById('help_text').play()" style="display:none;"></button>
+                        <audio id="help_text" src="/preliminary/help_text.wav"></audio>
+                        
                         <br>
+                        
                         <div class="frame">
                             <h1>TIME: {time}</h1>
                             <br>
@@ -141,7 +162,6 @@ def video_frame(vid: str, time: float):
                                     <input type="hidden" name="vid" value="{vid}">
                                     <input type="text" id="form_frame" name="form_frame" accesskey="," class="visible-input">
                                 </form>
-                            <h1>ALT+,</h1>
                         </div>
                         
                         <br>
@@ -151,6 +171,9 @@ def video_frame(vid: str, time: float):
                         <h1> TEXT ON SCREEN: </h1>
                         <p class="output_text"> {text_in_frame} </p>
                         
+                        <button accesskey="." onclick="document.getElementById('text_in_frame').play()" style="display:none;"></button>
+                        <audio id="text_in_frame" src="/preliminary/text_in_frame.wav"></audio>
+                        
                     </header>
                 </body>
             </html>
@@ -159,5 +182,9 @@ def video_frame(vid: str, time: float):
     return HTMLResponse(content=html_content, status_code=200)
 
 @app.post("/change-frame/")
-def upload_video(vid: str = Form(...), form_frame: str = Form(...)):
+def change_frame(vid: str = Form(...), form_frame: str = Form(...)):
     return RedirectResponse(url=f"/video/{vid}/frame/{form_frame}", status_code=303)
+
+@app.post("/go-back/")
+def go_back():
+    return RedirectResponse(url="/", status_code=303)
