@@ -8,6 +8,20 @@ h1 {
     margin: 0px;
 }
 
+.help_home {
+    border: 2px solid black;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 75px;
+}
+.help_symbol_home {
+    text-align: center;
+    width: 500px;
+    height: auto;
+    font-size: 250px;
+}
+
 .help {
     border: 2px solid black;
     width: 105px;
@@ -23,13 +37,13 @@ h1 {
 
 .upload {
     border: 2px solid black;
-    width: 500px;
+    width: 250px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 75px;
+    font-size: 38px;
 }
 .upload_img {
-    width: 500px;
+    width: 250px;
     height: auto;
 }
 
@@ -44,3 +58,16 @@ input {
     border: 0;
 }
 
+.visible-input {
+    position: static;
+    width: 150px;
+    height: 30px;
+    overflow: visible;
+    clip: auto;
+    border: 1px solid black;
+}
+
+.frame_image {
+    width: 100%;
+    height: auto;
+}

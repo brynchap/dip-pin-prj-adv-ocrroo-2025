@@ -5,7 +5,7 @@ Drive the API to complete "interprocess communication"
 Requirements
 """
 
-from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi import Response
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from pathlib import Path
 from library_basics import CodingVideo
 import shutil
+import pyttsx3
 
 
 app = FastAPI()
@@ -21,13 +22,15 @@ app = FastAPI()
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "videos"
 
+
 app.mount("/resources", StaticFiles(directory="resources"), name="resources")
+app.mount("/preliminary", StaticFiles(directory="preliminary"), name="preliminary")
 
 # We'll create a lightweight "database" for our videos
 # You can add uploads later (not required for assessment)
 # For now, we will just hardcode are samples
 VIDEOS: dict[str, Path] = {
-    "demo": Path("resources/oop.mp4"),
+    "demo": Path("videos/oop.mp4"),
 }
 
 class VideoMetaData(BaseModel):
@@ -36,20 +39,24 @@ class VideoMetaData(BaseModel):
     duration_seconds: float
     _links: dict | None = None
 
+
+
 @app.get("/", response_class=HTMLResponse)
 def main_page():
     html_content = f"""
     <html>
         <head>
-            <title>Title Test</title>
+            <title>Upload Page</title>
             <link rel="stylesheet" href="/resources/styles.css">
         </head>
         <body>
             <header>
-                <div class="help">
-                    <h1 class="help_symbol">?</h1>
+                <div class="help_home">
+                    <h1 class="help_symbol_home">?</h1>
                     <h1>ALT+H</h1>
                 </div>
+            
+                <br>
             
                 <form action="/upload/" method="POST" enctype="multipart/form-data">
                     <div class="upload">
@@ -83,7 +90,6 @@ async def upload_video(uploaded_file: UploadFile = File(...)):
 
     return RedirectResponse(url=f"/video/{uploaded_file.filename}/frame/0", status_code=303)
 
-
 def _open_vid_or_404(vid: str) -> CodingVideo:
     path = VIDEOS.get(vid)
     if not path or not path.is_file():
@@ -102,12 +108,56 @@ def _meta(video: CodingVideo) -> VideoMetaData:
 
 #UNFINISHED HERE
 # MODIFY IT TO GIVE A HTML RESPONSE AND BE SORTA SIMILAR TO THE WIREFRAME
-@app.get("/video/{vid}/frame/{t}", response_class=Response)
-def video_frame(vid: str, t: float):
+@app.get("/video/{vid}/frame/{time}", response_class=HTMLResponse)
+def video_frame(vid: str, time: float):
+    #Get Text From Video Frame
     try:
         video = _open_vid_or_404(vid)
-        video.save_as_image(t)
-        text = video.get_text_from_image()
-        return text
+        video.save_as_image(time)
+        text_in_frame = video.get_text_from_image()
+        if text_in_frame.replace(" ", "") == "":
+            text_in_frame = f"There is no text detected onscreen at {time} seconds"
     finally:
-      video.capture.release()
+        video.capture.release()
+
+    html_content = f"""
+            <html>
+                <head>
+                    <title>Video Page</title>
+                    <link rel="stylesheet" href="/resources/styles.css">
+                </head>
+                <body>
+                    <header>
+                        <div class="help">
+                            <h1 class="help_symbol">?</h1>
+                            <h1>ALT+H</h1>
+                        </div>
+                        <br>
+                        <div class="frame">
+                            <h1>TIME: {time}</h1>
+                            <br>
+                            <h1>NEW TIME:</h1>
+                                <form action="/change-frame/" method="POST">
+                                    <input type="hidden" name="vid" value="{vid}">
+                                    <input type="text" id="form_frame" name="form_frame" accesskey="," class="visible-input">
+                                </form>
+                            <h1>ALT+,</h1>
+                        </div>
+                        
+                        <br>
+                        
+                        <img class="frame_image" src="/preliminary/output.png" alt="output">
+                        
+                        <h1> TEXT ON SCREEN: </h1>
+                        <p class="output_text"> {text_in_frame} </p>
+                        
+                    </header>
+                </body>
+            </html>
+            """
+    print(text_in_frame)
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.post("/change-frame/")
+def upload_video(vid: str = Form(...), form_frame: str = Form(...)):
+    return RedirectResponse(url=f"/video/{vid}/frame/{form_frame}", status_code=303)

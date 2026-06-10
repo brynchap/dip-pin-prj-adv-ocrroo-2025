@@ -16,9 +16,12 @@ from pathlib import Path
 import cv2
 import numpy as np
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\20143871\Source\Repos\Tesseract-OCR\tesseract.exe'
 
 VID_PATH = Path("../resources/oop.mp4")
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+TESSERACT_PATH = BASE_DIR / "Tesseract-OCR" / "tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
 class CodingVideo:
     capture: cv2.VideoCapture
@@ -82,7 +85,7 @@ class CodingVideo:
 
 
 
-    def save_as_image(self, seconds: int, output_path: Path | str = 'output.png') -> None:
+    def save_as_image(self, seconds: int, output_path: Path | str = 'preliminary/output.png') -> None:
       """Saves the given frame as a png image
 
       # TODO: Requires a third-party library to convert ndarray to png
@@ -93,7 +96,7 @@ class CodingVideo:
       a = self.get_frame_rgb_array(self.get_frame_number_at_time(seconds))
       cv2.imwrite(output_path, a)
 
-    def get_text_from_image(self, image_path: Path | str = 'output.png') -> str:
+    def get_text_from_image(self, image_path: Path | str = 'preliminary/output.png') -> str:
         """Returns text from an image"""
         img_cv = cv2.imread(image_path)
         img_rgb = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
