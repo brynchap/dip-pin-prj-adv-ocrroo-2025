@@ -20,8 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "videos"
 
 
-app.mount("/resources", StaticFiles(directory="resources"), name="resources")
-app.mount("/preliminary", StaticFiles(directory="preliminary"), name="preliminary")
+RESOURCES_DIR = BASE_DIR.parent / "resources"
+
+app.mount("/resources", StaticFiles(directory=str(RESOURCES_DIR)), name="resources")
+app.mount("/preliminary", StaticFiles(directory=str(BASE_DIR)), name="preliminary")
 
 # We'll create a lightweight "database" for our videos
 # You can add uploads later (not required for assessment)
