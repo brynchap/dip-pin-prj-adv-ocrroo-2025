@@ -82,7 +82,7 @@ def main_page():
                         <h1>ALT+U</h1>
                         <!-- Added onChange to auto-submit the form when a file is picked -->
                         <input type="file" id="file-upload" class="visually-hidden" 
-                               name="uploaded_file" accesskey="u" onchange="this.form.submit()">
+                               name="uploaded_file" accesskey="u" accept="video/mp4" onchange="this.form.submit()">
                     </div>
                 </form>
             </header> 
