@@ -82,9 +82,6 @@ class CodingVideo:
             raise ValueError("Failed to encode frame")
         return buf.tobytes()
 
-
-
-
     def save_as_image(self, seconds: int, output_path: Path | str = 'preliminary/output.png') -> None:
       """Saves the given frame as a png image
 
