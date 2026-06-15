@@ -56,6 +56,9 @@ def main_page():
         <head>
             <title>Upload Page</title>
             <link rel="stylesheet" href="/resources/styles.css">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap" rel="stylesheet">
         </head>
         <body>
             <header>
@@ -137,6 +140,9 @@ def video_frame(vid: str, time: float):
                 <head>
                     <title>Video Page</title>
                     <link rel="stylesheet" href="/resources/styles.css">
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap" rel="stylesheet">
                 </head>
                 <body>
                     <header>
